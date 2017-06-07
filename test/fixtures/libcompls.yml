@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  libindex: 1
+  area_id: 1
+  question_index: 1
+  compliance_task: MyString
+  compliance_details: MyString
+  frequency: MyString
+  website_link: MyString
+  form_link: MyString
+  task_details: MyString
+  date: 2017-06-05
+  demo: false
+
+two:
+  libindex: 1
+  area_id: 1
+  question_index: 1
+  compliance_task: MyString
+  compliance_details: MyString
+  frequency: MyString
+  website_link: MyString
+  form_link: MyString
+  task_details: MyString
+  date: 2017-06-05
+  demo: false

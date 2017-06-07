@@ -1,0 +1,2 @@
+class Libcompl < ApplicationRecord
+end
