@@ -7,6 +7,8 @@
 		@setState edit: !@state.edit
 	handleDelete: (e) ->
 		e.preventDefault()
+		if confirm "Are you sure?\n\n\"#{ @props.libcompl.compliance_task }\" will be deleted.\n" then @handleDestroy e
+	handleDestroy: (e) ->
 		$.ajax
 			method: 'DELETE'
 			url: "/libcompls/#{ @props.libcompl.id }"
@@ -15,7 +17,6 @@
 				@props.handleDeleteLibcompl @props.libcompl
 	toggleDemo: (e) ->
 		e.preventDefault()
-		console.log e.target
 		@setState demo: !@state.demo
 	handleValueChange: (e) ->
 		valueName = e.target.name
@@ -42,21 +43,55 @@
 			success: (data) =>
 				@setState edit: false
 				@props.handleEditLibcompl @props.libcompl, data
-	showDialog: (e) ->
-		console.log e
+	showEditDialog: (e) ->
+		# $('#overlay').removeClass('hide')
+		# $('#edit').removeClass('hide')
+		# $('#editField').html(e.target.value)
+		$('#'+e.target.id).css('width', '200px')
+	hideEditDialog: (e) ->
+		$('#overlay').addClass('hide')
+		$('#edit').addClass('hide')
+	formatDate: (date) ->
+		d = date.getDate()
+		m = date.toLocaleString('en-us', month: 'short')
+		y = date.getFullYear() % 100
+		d+'.'+m+'.'+y
 	libcomplRow: ->
+		complianceDetails = @props.libcompl.compliance_details.split(/\s+/).slice(0,5).join(" ")
+		website = @props.libcompl.website_link
+		form = @props.libcompl.form_link
+		date = @props.libcompl.date
+		if date
+			date = @formatDate(new Date(date))
 		React.DOM.tr null,
 			React.DOM.td null, @props.libcompl.libindex
 			React.DOM.td null, @props.libcompl.question_index
 			React.DOM.td null, @props.libcompl.compliance_task
 			React.DOM.td 
 				className: 'td-textarea'
-				@props.libcompl.compliance_details
+				title: @props.libcompl.compliance_details.toString()
+				complianceDetails
 			React.DOM.td null, @props.libcompl.frequency
-			React.DOM.td null, @props.libcompl.website_link
-			React.DOM.td null, @props.libcompl.form_link
+			React.DOM.td null,
+			if website
+					React.DOM.a
+						className: 'btn text-primary'
+						href: 'http://'+ website
+						target: '_blank'
+						title: website
+						React.DOM.i
+							className: 'fa fa-globe'
+			React.DOM.td null,
+			if form
+				React.DOM.a
+					className: 'btn text-primary'
+					href: 'http://'+@props.libcompl.form_link
+					target: '_blank'
+					title: @props.libcompl.form_link
+					React.DOM.i
+						className: 'fa fa-file-text-o'
 			React.DOM.td null, @props.libcompl.task_details
-			React.DOM.td null, @props.libcompl.date
+			React.DOM.td null, date
 			React.DOM.td null, 
 				if @props.libcompl.demo
 					React.DOM.i
@@ -66,7 +101,7 @@
 						className: 'fa fa-close red'	
 			React.DOM.td null,
 				React.DOM.button
-					className: 'btn btn-secondary btn-sm mr5'
+					className: 'btn btn-secondary btn-sm'
 					onClick: @handleToggle
 					React.DOM.i
 						className: 'fa fa-pencil'
@@ -104,7 +139,7 @@
 						className: 'form-control'
 						defaultValue: @props.libcompl.compliance_details
 						name: 'compliance_details'
-						onFocus: @showDialog
+						onFocus: @showEditDialog
 						onChange: @handleValueChange
 				React.DOM.td null,
 					React.DOM.input
@@ -167,3 +202,4 @@
 			@libcomplForm()
 		else
 			@libcomplRow()
+		

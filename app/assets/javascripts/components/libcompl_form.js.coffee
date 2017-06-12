@@ -30,11 +30,12 @@
 			@props.handleNewLibcompl data
 			@setState @getInitialState()
 			'JSON'
+		$('#NewLibComplModal').modal('hide')
 	render: ->
 		React.DOM.form
 			onSubmit: @handleSubmit
 			React.DOM.div
-				className: 'card card-inverse bg-primary'
+				className: 'card card-inverse bg-form'
 				React.DOM.h4
 					className: 'card-header'
 					'New Library Compliance'
@@ -66,7 +67,7 @@
 							value: @state.compliance_task
 							onChange: @handleValueChange
 					React.DOM.div
-						className: 'form-group row'				
+						className: 'form-group row'			
 						React.DOM.textarea
 							rows: 4
 							className: 'form-control'
@@ -124,6 +125,6 @@
 						'Cancel'
 					React.DOM.button
 						type: 'submit'
-						className: 'btn btn-warning btn-sm'
+						className: 'btn btn-primary btn-sm'
 						disabled: !@valid()
 						'Create Compliance'

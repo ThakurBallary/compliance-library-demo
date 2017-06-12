@@ -16,11 +16,14 @@
 		index = @state.libcompls.indexOf libcompl
 		libcompls = React.addons.update(@state.libcompls, { $splice: [[index, 1, data]] })
 		@replaceState libcompls: libcompls
+	fixThead: ->
+		$('table.table').floatThead()
+		console.log "thead"
 	render: ->
 		React.DOM.div
 			className: 'libcompls'
 			React.DOM.nav
-				className: 'navbar navbar-inverse bg-primary'
+				className: 'navbar navbar-inverse bg-nav fixedTop'
 				React.DOM.h1
 					className: 'navbar-brand mb-0'
 					'Library Compliance'
@@ -39,18 +42,17 @@
 					className: 'modal-dialog modal-lg'
 					React.DOM.div
 						className: 'modal-content'
-						# React.DOM.div
-						# 	className: ''
-						React.createElement LibcomplForm, handleNewLibcompl: @addLibcompl
+						React.createElement LibcomplForm,handleNewLibcompl: @addLibcompl
 			React.DOM.table
-				className: 'table table-bordered table-hover table-responsive'
+				className: 'table table-hover table-responsive'
 				React.DOM.thead 
 					className: 'thead-inverse'
+					@fixThead
 					React.DOM.tr null,
-				    React.DOM.th null, 'Lib ID'
-				    React.DOM.th null, 'Q ID'
+				    React.DOM.th null, '#L'
+				    React.DOM.th null, '#Q'
 				    React.DOM.th null, 'Compliance'
-				    React.DOM.th null, 'Compliance Details'
+				    React.DOM.th null, 'Details'
 				    React.DOM.th null, 'Frequency'
 				    React.DOM.th null, 'Website'
 				    React.DOM.th null, 'Form'
@@ -63,3 +65,14 @@
 				React.DOM.tbody null,
 					for libcompl in @state.libcompls
 						React.createElement Libcompl, key: libcompl.id, libcompl: libcompl, handleDeleteLibcompl: @deleteLibcompl, handleEditLibcompl: @updateLibcompl
+			React.DOM.div
+				className: 'overlay hide'
+				id: 'overlay'
+			React.DOM.div
+				className: 'temp hide'
+				id: 'edit'
+				React.DOM.label null, "Compliance Details"
+				React.DOM.textarea
+					className: 'form-control'
+					id: 'editField'
+					defaultValue: @state.libcompls_details
